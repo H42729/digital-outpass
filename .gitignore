@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files (EXCLUDED)
+.env
+.env.*
+*.env
+backend/.env
+frontend/.env
+
+# Build outputs
+dist/
+build/
+**/dist/
+
+# Logs
+logs/
+*.log
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
