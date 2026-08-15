@@ -64,4 +64,11 @@ async function start() {
   }
 }
 
-start();
+// ── Start server (only if not running on Vercel) ────────────────────
+if (!process.env.VERCEL) {
+  start();
+}
+
+export default app;
+
+
