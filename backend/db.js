@@ -7,6 +7,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const isCloudDb = process.env.DB_HOST && process.env.DB_HOST !== 'localhost' && process.env.DB_HOST !== '127.0.0.1';
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -16,8 +18,9 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  // Return dates as strings (matches Spring Boot's Jackson output)
   dateStrings: true,
+  connectTimeout: 10000,
+  ssl: isCloudDb ? { rejectUnauthorized: false } : undefined,
 });
 
 export default pool;
