@@ -6,12 +6,12 @@ const RoleSelectionPage = () => {
   return (
     <div className="login-bg py-5">
       <div className="container" style={{ maxWidth: '900px' }}>
-        {/* Branding Header with PSNA Banner Logo */}
+        {/* Branding Header with Apex Banner Logo */}
         <div className="text-center mb-5">
           <div className="bg-white p-3 p-md-4 rounded-4 shadow-lg d-inline-block mb-4" style={{ maxWidth: '650px', width: '100%' }}>
             <img 
               src={COLLEGE_INFO.logo} 
-              alt="PSNA College of Engineering & Technology" 
+              alt="Apex Digital Outpass System" 
               className="img-fluid rounded"
               style={{ maxHeight: '140px', objectFit: 'contain' }}
             />
@@ -84,7 +84,7 @@ const RoleSelectionPage = () => {
         </div>
 
         <div className="text-center mt-5">
-          <small className="text-muted fw-semibold">PSNA College of Engineering & Technology • Digital Outpass System</small>
+          <small className="text-muted fw-semibold">Apex Digital Outpass Management System</small>
         </div>
       </div>
     </div>

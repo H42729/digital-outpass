@@ -1371,7 +1371,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     text-overflow: ellipsis;
   }
 
-  .app-navbar img[alt="PSNA College Logo"] {
+  .app-navbar img[alt*="College Logo"] {
     height: 26px !important;
   }
 

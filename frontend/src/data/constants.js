@@ -1,8 +1,8 @@
 // College metadata constants (no dummy user/request data)
 export const COLLEGE_INFO = {
-  name: 'PSNA College of Engineering & Technology',
-  tagline: 'Trust In God • Estd: 1984 • Dindigul - 624 622',
-  code: 'PSNA-CET-624622',
+  name: 'Apex Digital Outpass System',
+  tagline: 'Smart Campus Outpass Security System',
+  code: 'APEX-OUTPASS-2026',
   logo: '/logo.png'
 };
 

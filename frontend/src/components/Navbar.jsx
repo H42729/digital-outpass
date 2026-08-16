@@ -21,14 +21,14 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="bg-white px-1.5 px-sm-2 py-1 rounded shadow-sm me-1 me-sm-2 border">
             <img 
               src={COLLEGE_INFO.logo} 
-              alt="PSNA College Logo" 
+              alt="Apex College Logo" 
               height="30" 
               className="d-inline-block align-text-top rounded" 
             />
           </div>
           <div className="overflow-hidden">
-            <span className="fw-bold text-dark font-heading fs-6 d-block lh-1 text-truncate" style={{ maxWidth: '160px' }}>
-              PSNA Digital Outpass
+            <span className="fw-bold text-dark font-heading fs-6 d-block lh-1 text-truncate" style={{ maxWidth: '200px' }}>
+              Apex Digital Outpass
             </span>
             <small className="text-muted d-none d-sm-block" style={{ fontSize: '0.725rem' }}>
               {COLLEGE_INFO.tagline}

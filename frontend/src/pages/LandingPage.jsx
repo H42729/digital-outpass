@@ -107,7 +107,7 @@ const LandingPage = () => {
       <nav className={`pro-navbar ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
           <Link to="/" className="pro-brand d-flex align-items-center gap-2 gap-md-3 text-decoration-none">
-            <img src={COLLEGE_INFO.logo} alt="PSNA Logo" className="pro-brand-logo" />
+            <img src={COLLEGE_INFO.logo} alt="Apex Logo" className="pro-brand-logo" />
             <div className="pro-brand-text">
               <span className="pro-brand-title">{COLLEGE_INFO.name}</span>
               <span className="pro-brand-subtitle">Digital Outpass Management System</span>
@@ -315,7 +315,7 @@ const LandingPage = () => {
             </span>
             <h2 className="fw-bold text-dark font-heading display-6 mb-2">Designed for Institutional Efficiency</h2>
             <p className="text-secondary">
-              A comprehensive paperless infrastructure providing strict permission controls, rapid authorization loops, and security auditing for PSNA CET.
+              A comprehensive paperless infrastructure providing strict permission controls, rapid authorization loops, and security auditing for Apex Digital Outpass System.
             </p>
           </div>
 
@@ -477,7 +477,7 @@ const LandingPage = () => {
             
             <div className="col-lg-5">
               <div className="d-flex align-items-center gap-3 mb-3">
-                <img src={COLLEGE_INFO.logo} alt="PSNA Logo" className="bg-white p-1 rounded border" style={{ height: '48px' }} />
+                <img src={COLLEGE_INFO.logo} alt="Apex Logo" className="bg-white p-1 rounded border" style={{ height: '48px' }} />
                 <div>
                   <h5 className="fw-bold font-heading mb-0 text-dark">{COLLEGE_INFO.name}</h5>
                   <span className="text-primary small fw-medium">{COLLEGE_INFO.tagline}</span>
@@ -505,7 +505,7 @@ const LandingPage = () => {
               <h6 className="fw-bold font-heading text-dark text-uppercase mb-3" style={{ fontSize: '0.85rem', letterSpacing: '0.5px' }}>Campus Contact Information</h6>
               <div className="text-secondary small d-flex flex-column gap-2">
                 <div><i className="bi bi-geo-alt-fill text-primary me-2"></i> Kothandaraman Nagar, Muthanampatti (P.O), Dindigul - 624 622, Tamil Nadu, India.</div>
-                <div><i className="bi bi-envelope-fill text-primary me-2"></i> contactus@psnaet.ac.in</div>
+                <div><i className="bi bi-envelope-fill text-primary me-2"></i> support@apexoutpass.edu</div>
                 <div><i className="bi bi-telephone-fill text-primary me-2"></i> +91 451 2554032 / 2554400</div>
               </div>
             </div>
