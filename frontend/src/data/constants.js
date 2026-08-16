@@ -6,10 +6,11 @@ export const COLLEGE_INFO = {
   logo: '/logo.png'
 };
 
-// Backend API base URL (dynamic for local localhost vs Vercel production deployment)
-export const API_BASE_URL = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:8080'
-  : '';
+// Backend API base URL (dynamic for local localhost, VITE_API_URL env, or Vercel serverless)
+export const API_BASE_URL = import.meta.env.VITE_API_URL 
+  || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:8080'
+    : '');
 
 // Institutional Departments list
 export const DEPARTMENTS = [
