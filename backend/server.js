@@ -47,30 +47,30 @@ app.use((err, _req, res, _next) => {
 
 // ── Start server ────────────────────────────────────────────────────
 async function start() {
+  // Try MySQL, but don't crash if unavailable (routes have in-memory fallback)
   try {
-    // Verify database connection
     const connection = await pool.getConnection();
     console.log('✅ MySQL connected successfully');
     connection.release();
-
-    const server = app.listen(PORT, () => {
-      console.log('============================================');
-      console.log('  Outpass Management API Server is RUNNING  ');
-      console.log(`  http://localhost:${PORT}                  `);
-      console.log('============================================');
-    });
-
-    server.on('error', (err) => {
-      if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Port ${PORT} is already in use. Another instance of the server is running.`);
-      } else {
-        console.error('❌ Server error:', err);
-      }
-    });
   } catch (err) {
-    console.error('❌ Failed to connect to MySQL:', err.message);
-    process.exit(1);
+    console.warn('⚠️  MySQL not available — running with in-memory fallback:', err.message);
   }
+
+  // Always start the HTTP server
+  const server = app.listen(PORT, () => {
+    console.log('============================================');
+    console.log('  Outpass Management API Server is RUNNING  ');
+    console.log(`  http://localhost:${PORT}                  `);
+    console.log('============================================');
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use.`);
+    } else {
+      console.error('❌ Server error:', err);
+    }
+  });
 }
 
 // ── Start server (only if not running on Vercel) ────────────────────
