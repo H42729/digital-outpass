@@ -71,15 +71,15 @@ const OutpassFormModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
-      <div className="modal-dialog modal-dialog-centered modal-lg">
-        <div className="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div className="modal-content border-0 rounded-4 shadow-lg overflow-hidden" style={{ maxHeight: '90vh' }}>
           {/* Header */}
-          <div className="modal-header bg-primary text-white py-3 px-4">
+          <div className="modal-header bg-primary text-white py-3 px-3 px-md-4">
             <div className="d-flex align-items-center gap-2">
               <i className="bi bi-file-earmark-plus-fill fs-4"></i>
               <div>
-                <h5 className="modal-title font-heading fw-bold mb-0">Apply for Digital Outpass</h5>
-                <small className="opacity-75">Submit leave request for Class Teacher & HOD approval</small>
+                <h5 className="modal-title font-heading fw-bold mb-0 fs-6 fs-md-5">Apply for Digital Outpass</h5>
+                <small className="opacity-75 d-none d-sm-block" style={{ fontSize: '0.75rem' }}>Submit leave request for Class Teacher & HOD approval</small>
               </div>
             </div>
             <button 
@@ -91,11 +91,11 @@ const OutpassFormModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Form Body */}
-          <form onSubmit={handleSubmit} className={validated ? 'was-validated' : ''} noValidate>
-            <div className="modal-body p-4">
-              <div className="alert alert-info border-0 rounded-3 mb-4 d-flex align-items-center gap-2" style={{ backgroundColor: '#eff6ff', color: '#1e40af' }}>
-                <i className="bi bi-info-circle-fill fs-5"></i>
-                <small>
+          <form onSubmit={handleSubmit} className={`d-flex flex-column flex-grow-1 overflow-hidden ${validated ? 'was-validated' : ''}`} noValidate>
+            <div className="modal-body p-3 p-md-4 overflow-y-auto">
+              <div className="alert alert-info border-0 rounded-3 mb-3 mb-md-4 d-flex align-items-center gap-2" style={{ backgroundColor: '#eff6ff', color: '#1e40af' }}>
+                <i className="bi bi-info-circle-fill fs-5 flex-shrink-0"></i>
+                <small style={{ fontSize: '0.775rem' }}>
                   Once submitted, your request status will update automatically in real-time as your Class Teacher and HOD review your outpass.
                 </small>
               </div>
@@ -261,17 +261,17 @@ const OutpassFormModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Footer Buttons */}
-            <div className="modal-footer bg-light px-4 py-3 border-top">
+            <div className="modal-footer bg-light px-3 px-md-4 py-2.5 flex-column flex-sm-row gap-2 border-top">
               <button 
                 type="button" 
-                className="btn btn-outline-secondary btn-rounded" 
+                className="btn btn-outline-secondary btn-rounded w-100 w-sm-auto order-2 order-sm-1" 
                 onClick={onClose}
               >
                 Cancel
               </button>
               <button 
                 type="submit" 
-                className="btn btn-primary-gradient btn-rounded shadow-sm"
+                className="btn btn-primary-gradient btn-rounded shadow-sm w-100 w-sm-auto order-1 order-sm-2"
               >
                 <i className="bi bi-send-fill me-1"></i> Submit Outpass Request
               </button>

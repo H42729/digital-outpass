@@ -90,6 +90,7 @@ const workflowSteps = [
 
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,8 +105,8 @@ const LandingPage = () => {
 
       {/* ── Navbar ── */}
       <nav className={`pro-navbar ${scrolled ? 'is-scrolled' : ''}`}>
-        <div className="container-fluid px-4 d-flex align-items-center justify-content-between">
-          <Link to="/" className="pro-brand d-flex align-items-center gap-3 text-decoration-none">
+        <div className="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
+          <Link to="/" className="pro-brand d-flex align-items-center gap-2 gap-md-3 text-decoration-none">
             <img src={COLLEGE_INFO.logo} alt="PSNA Logo" className="pro-brand-logo" />
             <div className="pro-brand-text">
               <span className="pro-brand-title">{COLLEGE_INFO.name}</span>
@@ -113,13 +114,54 @@ const LandingPage = () => {
             </div>
           </Link>
 
+          {/* Desktop Nav Links */}
           <div className="pro-nav-links d-none d-md-flex align-items-center gap-4">
             <a href="#overview" className="pro-nav-item">Overview</a>
             <a href="#features" className="pro-nav-item">Features</a>
             <a href="#workflow" className="pro-nav-item">Approval Workflow</a>
             <a href="#portals" className="pro-nav-item">Portals</a>
+            <Link to="/login" className="btn btn-primary btn-sm btn-rounded px-3 py-1.5 fw-bold ms-2">
+              Select Role <i className="bi bi-arrow-right ms-1"></i>
+            </Link>
+          </div>
+
+          {/* Mobile Right Controls */}
+          <div className="d-flex align-items-center gap-2 d-md-none">
+            <Link to="/login" className="btn btn-primary btn-sm btn-rounded px-2.5 py-1 text-nowrap fw-bold" style={{ fontSize: '0.75rem' }}>
+              Select Role
+            </Link>
+            <button
+              className="btn btn-light btn-sm border-0 p-1 text-dark"
+              onClick={() => setMobileNavOpen(prev => !prev)}
+              aria-label="Toggle Navigation"
+            >
+              <i className={`bi ${mobileNavOpen ? 'bi-x-lg' : 'bi-list'} fs-4`}></i>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Nav Drawer */}
+        {mobileNavOpen && (
+          <div className="bg-white border-top border-bottom py-3 px-4 d-md-none animate-fadeIn">
+            <div className="d-flex flex-column gap-2 mb-3">
+              <a href="#overview" className="pro-nav-item py-1.5 border-bottom" onClick={() => setMobileNavOpen(false)}>Overview</a>
+              <a href="#features" className="pro-nav-item py-1.5 border-bottom" onClick={() => setMobileNavOpen(false)}>Features</a>
+              <a href="#workflow" className="pro-nav-item py-1.5 border-bottom" onClick={() => setMobileNavOpen(false)}>Approval Workflow</a>
+              <a href="#portals" className="pro-nav-item py-1.5" onClick={() => setMobileNavOpen(false)}>Portals</a>
+            </div>
+            <div className="d-flex flex-column gap-2">
+              <Link to="/login/student" className="btn btn-primary btn-sm btn-rounded text-start px-3 py-2" onClick={() => setMobileNavOpen(false)}>
+                <i className="bi bi-mortarboard-fill me-2"></i> Student Login
+              </Link>
+              <Link to="/login/teacher" className="btn btn-success btn-sm btn-rounded text-start px-3 py-2" onClick={() => setMobileNavOpen(false)}>
+                <i className="bi bi-person-badge-fill me-2"></i> Teacher Login
+              </Link>
+              <Link to="/login/hod" className="btn btn-dark btn-sm btn-rounded text-start px-3 py-2" onClick={() => setMobileNavOpen(false)}>
+                <i className="bi bi-shield-lock-fill me-2"></i> HOD Login
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero Section (Light Unique Theme) ── */}
