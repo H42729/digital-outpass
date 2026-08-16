@@ -4,6 +4,6 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cd backend && npm install",
-    "start": "cd backend && node server.js"
+    "start": "node backend/server.js"
   }
 }
