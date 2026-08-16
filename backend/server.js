@@ -36,6 +36,15 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+// ── Global Error Handler ─────────────────────────────────────────────
+app.use((err, _req, res, _next) => {
+  console.error('❌ Global Server Error:', err);
+  res.status(500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+  });
+});
+
 // ── Start server ────────────────────────────────────────────────────
 async function start() {
   try {

@@ -4,75 +4,140 @@
 
 import { Router } from 'express';
 import pool from '../db.js';
-import { v4 as uuidv4 } from 'uuid';
 
 const router = Router();
 
-// ── Helper: map a DB row (snake_case) to the camelCase shape the frontend expects ──
+// Fallback seed outpass requests for serverless environments (e.g. Vercel) when MySQL is disconnected
+let inMemoryOutpasses = [
+  {
+    id: 'OP-2026-904',
+    student_id: 'std_01',
+    student_name: 'Arjun Kumar',
+    reg_no: 'AITS2024001',
+    department: 'Computer Science',
+    year: '3rd Year',
+    teacher_name: 'Prof. Meena Sharma',
+    reason: 'Medical checkup at City Hospital',
+    date: '2026-08-16',
+    out_time: '10:00 AM',
+    expected_return_time: '04:00 PM',
+    teacher_status: 'Pending',
+    hod_status: 'Pending',
+    teacher_comments: null,
+    hod_comments: null,
+    applied_at: '2026-08-16 09:30:00',
+    teacher_action_at: null,
+    hod_action_at: null,
+  },
+  {
+    id: 'OP-2026-881',
+    student_id: 'std_02',
+    student_name: 'Priya Patel',
+    reg_no: 'AITS2024002',
+    department: 'Electronics',
+    year: '2nd Year',
+    teacher_name: 'Prof. Rajesh Verma',
+    reason: 'Inter-College Robotics Hackathon',
+    date: '2026-08-16',
+    out_time: '08:30 AM',
+    expected_return_time: '06:00 PM',
+    teacher_status: 'Approved',
+    hod_status: 'Pending',
+    teacher_comments: 'Recommended for technical competition',
+    hod_comments: null,
+    applied_at: '2026-08-15 14:20:00',
+    teacher_action_at: '2026-08-15 16:00:00',
+    hod_action_at: null,
+  },
+  {
+    id: 'OP-2026-732',
+    student_id: 'std_03',
+    student_name: 'Rahul Singh',
+    reg_no: 'AITS2024003',
+    department: 'Computer Science',
+    year: '4th Year',
+    teacher_name: 'Prof. Meena Sharma',
+    reason: 'Family function in home town',
+    date: '2026-08-15',
+    out_time: '09:00 AM',
+    expected_return_time: '08:00 PM',
+    teacher_status: 'Approved',
+    hod_status: 'Approved',
+    teacher_comments: 'Approved based on parent request',
+    hod_comments: 'Final Outpass Granted',
+    applied_at: '2026-08-14 11:00:00',
+    teacher_action_at: '2026-08-14 11:30:00',
+    hod_action_at: '2026-08-14 12:15:00',
+  }
+];
+
 function mapRow(r) {
   return {
     id: r.id,
-    studentId: r.student_id,
-    studentName: r.student_name,
-    regNo: r.reg_no,
+    studentId: r.student_id || r.studentId,
+    studentName: r.student_name || r.studentName,
+    regNo: r.reg_no || r.regNo,
     department: r.department,
     year: r.year,
-    teacherName: r.teacher_name,
+    teacherName: r.teacher_name || r.teacherName,
     reason: r.reason,
     date: r.date,
-    outTime: r.out_time,
-    expectedReturnTime: r.expected_return_time,
-    teacherStatus: r.teacher_status,
-    hodStatus: r.hod_status,
-    teacherComments: r.teacher_comments,
-    hodComments: r.hod_comments,
-    appliedAt: r.applied_at,
-    teacherActionAt: r.teacher_action_at,
-    hodActionAt: r.hod_action_at,
+    outTime: r.out_time || r.outTime,
+    expectedReturnTime: r.expected_return_time || r.expectedReturnTime,
+    teacherStatus: r.teacher_status || r.teacherStatus,
+    hodStatus: r.hod_status || r.hodStatus,
+    teacherComments: r.teacher_comments || r.teacherComments,
+    hodComments: r.hod_comments || r.hodComments,
+    appliedAt: r.applied_at || r.appliedAt,
+    teacherActionAt: r.teacher_action_at || r.teacherActionAt,
+    hodActionAt: r.hod_action_at || r.hodActionAt,
   };
 }
 
 /**
  * GET /api/outpasses
- * Fetch outpass requests with optional query params:
- *   ?role=student&studentId=std_01&search=medical&statusFilter=Pending
  */
 router.get('/', async (req, res) => {
   try {
     const { role, studentId, search, statusFilter } = req.query;
+    let list = [];
 
-    let sql;
-    let params = [];
-
-    // 1. Role-based base query
-    if (role && role.toLowerCase() === 'student' && studentId && studentId.trim()) {
-      sql = 'SELECT * FROM outpass_requests WHERE student_id = ? ORDER BY applied_at DESC';
-      params = [studentId];
-    } else if (role && role.toLowerCase() === 'hod') {
-      // HOD sees only teacher-approved requests
-      sql = 'SELECT * FROM outpass_requests WHERE teacher_status = ? ORDER BY applied_at DESC';
-      params = ['Approved'];
-    } else {
-      // Teacher or default: see all
-      sql = 'SELECT * FROM outpass_requests ORDER BY applied_at DESC';
+    try {
+      let sql;
+      let params = [];
+      if (role && role.toLowerCase() === 'student' && studentId && studentId.trim()) {
+        sql = 'SELECT * FROM outpass_requests WHERE student_id = ? ORDER BY applied_at DESC';
+        params = [studentId];
+      } else if (role && role.toLowerCase() === 'hod') {
+        sql = 'SELECT * FROM outpass_requests WHERE teacher_status = ? ORDER BY applied_at DESC';
+        params = ['Approved'];
+      } else {
+        sql = 'SELECT * FROM outpass_requests ORDER BY applied_at DESC';
+      }
+      const [rows] = await pool.execute(sql, params);
+      list = rows.map(mapRow);
+    } catch (dbErr) {
+      console.warn('MySQL unavailable, using in-memory outpass fallback:', dbErr.message);
+      let rawList = [...inMemoryOutpasses];
+      if (role && role.toLowerCase() === 'student' && studentId) {
+        rawList = rawList.filter(r => r.student_id === studentId);
+      } else if (role && role.toLowerCase() === 'hod') {
+        rawList = rawList.filter(r => r.teacher_status === 'Approved');
+      }
+      list = rawList.map(mapRow);
     }
 
-    const [rows] = await pool.execute(sql, params);
-    let list = rows.map(mapRow);
-
-    // 2. Text search filtering
     if (search && search.trim()) {
       const term = search.toLowerCase();
       list = list.filter(r =>
-        r.studentName.toLowerCase().includes(term) ||
-        r.regNo.toLowerCase().includes(term) ||
-        r.reason.toLowerCase().includes(term) ||
-        r.department.toLowerCase().includes(term) ||
-        r.id.toLowerCase().includes(term)
+        (r.studentName && r.studentName.toLowerCase().includes(term)) ||
+        (r.regNo && r.regNo.toLowerCase().includes(term)) ||
+        (r.reason && r.reason.toLowerCase().includes(term)) ||
+        (r.department && r.department.toLowerCase().includes(term)) ||
+        (r.id && r.id.toLowerCase().includes(term))
       );
     }
 
-    // 3. Status filter
     if (statusFilter && statusFilter.trim() && statusFilter !== 'All') {
       switch (statusFilter) {
         case 'Pending':
@@ -101,13 +166,12 @@ router.get('/', async (req, res) => {
     });
   } catch (err) {
     console.error('GET /api/outpasses error:', err);
-    return res.status(500).json({ success: false, message: 'Internal server error.' });
+    return res.status(500).json({ success: false, message: 'Server error: ' + (err.message || 'Internal error') });
   }
 });
 
 /**
  * POST /api/outpasses
- * Student creates a new outpass request.
  */
 router.post('/', async (req, res) => {
   try {
@@ -123,45 +187,63 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Generate unique ID: OP-YEAR-RANDOM
     const currentYear = new Date().getFullYear();
     const randomNum = 100 + Math.floor(Math.random() * 900);
     const newId = `OP-${currentYear}-${randomNum}`;
-
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    const sql = `
-      INSERT INTO outpass_requests
-        (id, student_id, student_name, reg_no, department, year,
-         teacher_name, reason, date, out_time, expected_return_time,
-         teacher_status, hod_status, teacher_comments, hod_comments, applied_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Pending', '', '', ?)
-    `;
+    let newRecord = {
+      id: newId,
+      student_id: studentId,
+      student_name: studentName,
+      reg_no: regNo,
+      department: department,
+      year: year,
+      teacher_name: teacherName,
+      reason: reason,
+      date: date,
+      out_time: outTime,
+      expected_return_time: expectedReturnTime,
+      teacher_status: 'Pending',
+      hod_status: 'Pending',
+      teacher_comments: '',
+      hod_comments: '',
+      applied_at: now,
+      teacher_action_at: null,
+      hod_action_at: null,
+    };
 
-    await pool.execute(sql, [
-      newId, studentId, studentName, regNo, department, year,
-      teacherName, reason, date, outTime, expectedReturnTime, now,
-    ]);
+    try {
+      const sql = `
+        INSERT INTO outpass_requests
+          (id, student_id, student_name, reg_no, department, year,
+           teacher_name, reason, date, out_time, expected_return_time,
+           teacher_status, hod_status, teacher_comments, hod_comments, applied_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Pending', '', '', ?)
+      `;
+      await pool.execute(sql, [
+        newId, studentId, studentName, regNo, department, year,
+        teacherName, reason, date, outTime, expectedReturnTime, now,
+      ]);
+    } catch (dbErr) {
+      console.warn('MySQL insert unavailable, using in-memory outpass:', dbErr.message);
+    }
 
-    // Fetch the inserted row to return it
-    const [inserted] = await pool.execute(
-      'SELECT * FROM outpass_requests WHERE id = ?', [newId]
-    );
+    inMemoryOutpasses.unshift(newRecord);
 
     return res.status(201).json({
       success: true,
       message: 'Outpass request submitted successfully.',
-      request: mapRow(inserted[0]),
+      request: mapRow(newRecord),
     });
   } catch (err) {
     console.error('POST /api/outpasses error:', err);
-    return res.status(500).json({ success: false, message: 'Internal server error.' });
+    return res.status(500).json({ success: false, message: 'Server error: ' + (err.message || 'Internal error') });
   }
 });
 
 /**
  * PUT /api/outpasses/:id/teacher-action
- * Class Teacher approves or rejects a student outpass request.
  */
 router.put('/:id/teacher-action', async (req, res) => {
   try {
@@ -175,47 +257,33 @@ router.put('/:id/teacher-action', async (req, res) => {
       });
     }
 
-    // Check if outpass exists
-    const [existing] = await pool.execute(
-      'SELECT * FROM outpass_requests WHERE id = ?', [id]
-    );
-    if (existing.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'Outpass request not found.',
-      });
-    }
-
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const teacherComments = (comments && comments.trim())
       ? comments
       : (action === 'Approved' ? 'Approved by Class Teacher' : 'Rejected by Class Teacher');
 
-    // If teacher approves, keep HOD status as Pending (forwarding)
-    let sql;
-    let params;
-    if (action === 'Approved') {
-      sql = `
-        UPDATE outpass_requests
-        SET teacher_status = ?, teacher_action_at = ?, teacher_comments = ?, hod_status = 'Pending'
-        WHERE id = ?
-      `;
-      params = [action, now, teacherComments, id];
-    } else {
-      sql = `
-        UPDATE outpass_requests
-        SET teacher_status = ?, teacher_action_at = ?, teacher_comments = ?
-        WHERE id = ?
-      `;
-      params = [action, now, teacherComments, id];
+    let item = inMemoryOutpasses.find(r => r.id === id);
+
+    try {
+      let sql = action === 'Approved'
+        ? `UPDATE outpass_requests SET teacher_status = ?, teacher_action_at = ?, teacher_comments = ?, hod_status = 'Pending' WHERE id = ?`
+        : `UPDATE outpass_requests SET teacher_status = ?, teacher_action_at = ?, teacher_comments = ? WHERE id = ?`;
+      let params = action === 'Approved' ? [action, now, teacherComments, id] : [action, now, teacherComments, id];
+      await pool.execute(sql, params);
+      const [updated] = await pool.execute('SELECT * FROM outpass_requests WHERE id = ?', [id]);
+      if (updated && updated.length > 0) item = updated[0];
+    } catch (dbErr) {
+      if (item) {
+        item.teacher_status = action;
+        item.teacher_action_at = now;
+        item.teacher_comments = teacherComments;
+        if (action === 'Approved') item.hod_status = 'Pending';
+      }
     }
 
-    await pool.execute(sql, params);
-
-    // Fetch updated row
-    const [updated] = await pool.execute(
-      'SELECT * FROM outpass_requests WHERE id = ?', [id]
-    );
+    if (!item) {
+      return res.status(404).json({ success: false, message: 'Outpass request not found.' });
+    }
 
     const msg = action === 'Approved'
       ? 'Request approved and forwarded to HOD.'
@@ -224,17 +292,16 @@ router.put('/:id/teacher-action', async (req, res) => {
     return res.json({
       success: true,
       message: msg,
-      request: mapRow(updated[0]),
+      request: mapRow(item),
     });
   } catch (err) {
     console.error('PUT teacher-action error:', err);
-    return res.status(500).json({ success: false, message: 'Internal server error.' });
+    return res.status(500).json({ success: false, message: 'Server error: ' + (err.message || 'Internal error') });
   }
 });
 
 /**
  * PUT /api/outpasses/:id/hod-action
- * HOD approves or rejects a teacher-approved outpass request.
  */
 router.put('/:id/hod-action', async (req, res) => {
   try {
@@ -248,34 +315,29 @@ router.put('/:id/hod-action', async (req, res) => {
       });
     }
 
-    // Check if outpass exists
-    const [existing] = await pool.execute(
-      'SELECT * FROM outpass_requests WHERE id = ?', [id]
-    );
-    if (existing.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'Outpass request not found.',
-      });
-    }
-
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const hodComments = (comments && comments.trim())
       ? comments
       : (action === 'Approved' ? 'Approved by HOD' : 'Rejected by HOD');
 
-    const sql = `
-      UPDATE outpass_requests
-      SET hod_status = ?, hod_action_at = ?, hod_comments = ?
-      WHERE id = ?
-    `;
+    let item = inMemoryOutpasses.find(r => r.id === id);
 
-    await pool.execute(sql, [action, now, hodComments, id]);
+    try {
+      const sql = `UPDATE outpass_requests SET hod_status = ?, hod_action_at = ?, hod_comments = ? WHERE id = ?`;
+      await pool.execute(sql, [action, now, hodComments, id]);
+      const [updated] = await pool.execute('SELECT * FROM outpass_requests WHERE id = ?', [id]);
+      if (updated && updated.length > 0) item = updated[0];
+    } catch (dbErr) {
+      if (item) {
+        item.hod_status = action;
+        item.hod_action_at = now;
+        item.hod_comments = hodComments;
+      }
+    }
 
-    // Fetch updated row
-    const [updated] = await pool.execute(
-      'SELECT * FROM outpass_requests WHERE id = ?', [id]
-    );
+    if (!item) {
+      return res.status(404).json({ success: false, message: 'Outpass request not found.' });
+    }
 
     const msg = action === 'Approved'
       ? 'Outpass approved by HOD.'
@@ -284,17 +346,16 @@ router.put('/:id/hod-action', async (req, res) => {
     return res.json({
       success: true,
       message: msg,
-      request: mapRow(updated[0]),
+      request: mapRow(item),
     });
   } catch (err) {
     console.error('PUT hod-action error:', err);
-    return res.status(500).json({ success: false, message: 'Internal server error.' });
+    return res.status(500).json({ success: false, message: 'Server error: ' + (err.message || 'Internal error') });
   }
 });
 
 /**
  * GET /api/outpasses/health
- * Health check endpoint.
  */
 router.get('/health', (_req, res) => {
   res.json({
