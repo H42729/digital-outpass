@@ -6,28 +6,28 @@ const Navbar = ({ toggleSidebar }) => {
   const { currentUser, logout } = useOutpass();
 
   return (
-    <nav className="navbar navbar-expand-lg app-navbar sticky-top px-3 py-2">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg app-navbar sticky-top px-2 px-sm-3 py-2">
+      <div className="container-fluid px-1 px-sm-2">
         {/* Left Side: Mobile Sidebar Toggle & College Title */}
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-1 gap-sm-2">
           <button 
-            className="btn btn-light d-lg-none border-0 me-1" 
+            className="btn btn-light d-lg-none border-0 p-1 me-1" 
             onClick={toggleSidebar}
             aria-label="Toggle Sidebar"
           >
             <i className="bi bi-list fs-4"></i>
           </button>
 
-          <div className="bg-white px-2 py-1 rounded shadow-sm me-2 border">
+          <div className="bg-white px-1.5 px-sm-2 py-1 rounded shadow-sm me-1 me-sm-2 border">
             <img 
               src={COLLEGE_INFO.logo} 
               alt="PSNA College Logo" 
-              height="32" 
+              height="30" 
               className="d-inline-block align-text-top rounded" 
             />
           </div>
-          <div>
-            <span className="fw-bold text-dark font-heading fs-6 d-block lh-1">
+          <div className="overflow-hidden">
+            <span className="fw-bold text-dark font-heading fs-6 d-block lh-1 text-truncate" style={{ maxWidth: '160px' }}>
               PSNA Digital Outpass
             </span>
             <small className="text-muted d-none d-sm-block" style={{ fontSize: '0.725rem' }}>
@@ -37,21 +37,21 @@ const Navbar = ({ toggleSidebar }) => {
         </div>
 
         {/* Right Side: Active User Profile & Actions */}
-        <div className="d-flex align-items-center gap-3 ms-auto">
+        <div className="d-flex align-items-center gap-2 gap-sm-3 ms-auto">
 
           {/* User Profile Badge */}
           {currentUser && (
-            <div className="d-flex align-items-center gap-2 border-start ps-3">
+            <div className="d-flex align-items-center gap-2 border-start ps-2 ps-sm-3">
               {currentUser.avatarUrl || currentUser.avatar ? (
                 <img 
                   src={currentUser.avatarUrl || currentUser.avatar} 
                   alt={currentUser.name} 
-                  width="38" 
-                  height="38" 
+                  width="36" 
+                  height="36" 
                   className="rounded-circle object-fit-cover border border-2 border-primary" 
                 />
               ) : (
-                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: '38px', height: '38px', fontSize: '1rem' }}>
+                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: '36px', height: '36px', fontSize: '0.95rem' }}>
                   {currentUser.name?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
               )}

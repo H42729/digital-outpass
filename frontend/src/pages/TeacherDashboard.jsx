@@ -12,7 +12,7 @@ const TeacherDashboard = () => {
   // Always fetch fresh data when the dashboard mounts
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
 
   const handleCommentChange = (id, val) => {
     setCommentInput(prev => ({ ...prev, [id]: val }));
@@ -54,67 +54,67 @@ const TeacherDashboard = () => {
   return (
     <div className="container-fluid py-2">
       {/* Header Banner */}
-      <div className="dash-card p-4 mb-4 bg-white border-0 shadow-sm rounded-4">
-        <div className="d-flex align-items-center gap-2 mb-2">
+      <div className="dash-card p-3 p-sm-4 mb-4 bg-white border-0 shadow-sm rounded-4">
+        <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
           <span className="badge bg-primary text-white fw-bold px-3 py-1 rounded-pill">
             CLASS TEACHER PORTAL
           </span>
           <span className="text-muted small">• {currentUser?.name || 'Dr. S. Kulkarni'}</span>
         </div>
-        <h3 className="fw-bold text-dark font-heading mb-1">
+        <h3 className="fw-bold text-dark font-heading mb-1 fs-4 fs-sm-3">
           Student Outpass Approvals Queue
         </h3>
-        <p className="text-secondary mb-0" style={{ fontSize: '0.925rem' }}>
+        <p className="text-secondary mb-0" style={{ fontSize: '0.9rem' }}>
           Review leave requests submitted by students. Approving automatically forwards the application to the HOD. Rejecting updates the student's status immediately.
         </p>
       </div>
 
       {/* Metrics Row */}
-      <div className="row g-3 mb-4">
+      <div className="row g-2 g-sm-3 mb-4">
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-primary d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Total Applications</small>
-              <h3 className="fw-bold text-dark mb-0">{totalCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-primary d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Total Applications</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{totalCount}</h3>
             </div>
-            <div className="bg-primary-subtle text-primary p-3 rounded-circle">
-              <i className="bi bi-files fs-4"></i>
+            <div className="bg-primary-subtle text-primary d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-files fs-5"></i>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-warning d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Pending Review</small>
-              <h3 className="fw-bold text-dark mb-0">{pendingCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-warning d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Pending Review</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{pendingCount}</h3>
             </div>
-            <div className="bg-warning-subtle text-warning p-3 rounded-circle">
-              <i className="bi bi-hourglass-split fs-4"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-success d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Approved by You</small>
-              <h3 className="fw-bold text-dark mb-0">{approvedCount}</h3>
-            </div>
-            <div className="bg-success-subtle text-success p-3 rounded-circle">
-              <i className="bi bi-check-circle-fill fs-4"></i>
+            <div className="bg-warning-subtle text-warning d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-hourglass-split fs-5"></i>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-danger d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Rejected by You</small>
-              <h3 className="fw-bold text-dark mb-0">{rejectedCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-success d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Approved by You</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{approvedCount}</h3>
             </div>
-            <div className="bg-danger-subtle text-danger p-3 rounded-circle">
-              <i className="bi bi-x-circle-fill fs-4"></i>
+            <div className="bg-success-subtle text-success d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-check-circle-fill fs-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-6 col-md-3">
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-danger d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Rejected by You</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{rejectedCount}</h3>
+            </div>
+            <div className="bg-danger-subtle text-danger d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-x-circle-fill fs-5"></i>
             </div>
           </div>
         </div>

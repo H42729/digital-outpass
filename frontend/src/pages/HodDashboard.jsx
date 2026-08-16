@@ -12,7 +12,7 @@ const HodDashboard = () => {
   // Always fetch fresh data when the dashboard mounts
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
 
   const handleCommentChange = (id, val) => {
     setCommentInput(prev => ({ ...prev, [id]: val }));
@@ -55,67 +55,67 @@ const HodDashboard = () => {
   return (
     <div className="container-fluid py-2">
       {/* Header Banner */}
-      <div className="dash-card p-4 mb-4 bg-white border-0 shadow-sm rounded-4">
-        <div className="d-flex align-items-center gap-2 mb-2">
+      <div className="dash-card p-3 p-sm-4 mb-4 bg-white border-0 shadow-sm rounded-4">
+        <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
           <span className="badge bg-dark text-white fw-bold px-3 py-1 rounded-pill">
             HOD EXECUTIVE PORTAL
           </span>
           <span className="text-muted small">• {currentUser?.name || 'Dr. A. R. Venkatesh'}</span>
         </div>
-        <h3 className="fw-bold text-dark font-heading mb-1">
+        <h3 className="fw-bold text-dark font-heading mb-1 fs-4 fs-sm-3">
           Final Outpass Approval Desk
         </h3>
-        <p className="text-secondary mb-0" style={{ fontSize: '0.925rem' }}>
+        <p className="text-secondary mb-0" style={{ fontSize: '0.9rem' }}>
           Review outpasses pre-approved by Class Teachers. Approving updates status to "Approved by HOD" and grants official gate pass. Rejecting updates status to "Rejected by HOD".
         </p>
       </div>
 
       {/* Metrics Row */}
-      <div className="row g-3 mb-4">
+      <div className="row g-2 g-sm-3 mb-4">
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-info d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Received from Teacher</small>
-              <h3 className="fw-bold text-dark mb-0">{totalTeacherApprovedCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-info d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Received from Teacher</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{totalTeacherApprovedCount}</h3>
             </div>
-            <div className="bg-info-subtle text-info p-3 rounded-circle">
-              <i className="bi bi-inbox-fill fs-4"></i>
+            <div className="bg-info-subtle text-info d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-inbox-fill fs-5"></i>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-warning d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Awaiting Sign-Off</small>
-              <h3 className="fw-bold text-dark mb-0">{pendingHodCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-warning d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Awaiting Sign-Off</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{pendingHodCount}</h3>
             </div>
-            <div className="bg-warning-subtle text-warning p-3 rounded-circle">
-              <i className="bi bi-clock fs-4"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-success d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Approved by HOD</small>
-              <h3 className="fw-bold text-dark mb-0">{hodApprovedCount}</h3>
-            </div>
-            <div className="bg-success-subtle text-success p-3 rounded-circle">
-              <i className="bi bi-patch-check-fill fs-4"></i>
+            <div className="bg-warning-subtle text-warning d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-clock fs-5"></i>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 border-start border-4 border-danger d-flex align-items-center justify-content-between">
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Rejected by HOD</small>
-              <h3 className="fw-bold text-dark mb-0">{hodRejectedCount}</h3>
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-success d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Approved by HOD</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{hodApprovedCount}</h3>
             </div>
-            <div className="bg-danger-subtle text-danger p-3 rounded-circle">
-              <i className="bi bi-shield-x fs-4"></i>
+            <div className="bg-success-subtle text-success d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-patch-check-fill fs-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-6 col-md-3">
+          <div className="dash-card p-2.5 p-sm-3 border-start border-4 border-danger d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Rejected by HOD</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{hodRejectedCount}</h3>
+            </div>
+            <div className="bg-danger-subtle text-danger d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style={{ width: '40px', height: '40px' }}>
+              <i className="bi bi-shield-x fs-5"></i>
             </div>
           </div>
         </div>

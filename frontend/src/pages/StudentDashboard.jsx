@@ -16,7 +16,7 @@ const StudentDashboard = () => {
   // Always fetch fresh data when the student dashboard mounts
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
 
   // Requests are already filtered by studentId on the backend
   const displayRequests = requests;
@@ -67,26 +67,26 @@ const StudentDashboard = () => {
   return (
     <div className="container-fluid py-2">
       {/* Welcome Banner */}
-      <div className="dash-card p-4 mb-4 bg-white border-0 shadow-sm rounded-4 position-relative overflow-hidden">
-        <div className="row align-items-center">
+      <div className="dash-card p-3 p-sm-4 mb-4 bg-white border-0 shadow-sm rounded-4 position-relative overflow-hidden">
+        <div className="row align-items-center g-3">
           <div className="col-lg-8">
-            <div className="d-flex align-items-center gap-2 mb-2">
+            <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
               <span className="badge bg-primary-subtle text-primary fw-bold px-3 py-1 rounded-pill">
                 STUDENT PORTAL
               </span>
               <span className="text-muted small">• {currentUser?.department} ({currentUser?.year})</span>
             </div>
-            <h2 className="fw-bold text-dark font-heading mb-1">
+            <h2 className="fw-bold text-dark font-heading mb-1 fs-4 fs-sm-2">
               Welcome back, {currentUser?.name || 'Rahul Sharma'}! 👋
             </h2>
-            <p className="text-secondary mb-3 mb-lg-0" style={{ fontSize: '0.95rem' }}>
+            <p className="text-secondary mb-0" style={{ fontSize: '0.9rem' }}>
               Submit and track your digital outpass requests online. Instant status updates as your Class Teacher and HOD review your application.
             </p>
           </div>
 
           <div className="col-lg-4 text-lg-end">
             <button 
-              className="btn btn-primary-gradient btn-rounded px-4 py-3 shadow"
+              className="btn btn-primary-gradient btn-rounded w-100 w-lg-auto px-4 py-2.5 py-sm-3 shadow"
               onClick={() => setIsFormOpen(true)}
             >
               <i className="bi bi-file-earmark-plus-fill fs-5 me-2"></i> Apply Outpass
@@ -96,51 +96,51 @@ const StudentDashboard = () => {
       </div>
 
       {/* Dashboard Metrics Cards */}
-      <div className="row g-3 mb-4">
+      <div className="row g-2 g-sm-3 mb-4">
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 d-flex align-items-center gap-3">
-            <div className="bg-primary-subtle text-primary rounded-3 p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
-              <i className="bi bi-file-earmark-text-fill fs-4"></i>
+          <div className="dash-card p-2.5 p-sm-3 d-flex align-items-center gap-2 gap-sm-3 overflow-hidden">
+            <div className="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px' }}>
+              <i className="bi bi-file-earmark-text-fill fs-5"></i>
             </div>
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Total Requests</small>
-              <h3 className="fw-bold text-dark mb-0">{displayRequests.length}</h3>
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Total Requests</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{displayRequests.length}</h3>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 d-flex align-items-center gap-3">
-            <div className="bg-warning-subtle text-warning rounded-3 p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
-              <i className="bi bi-hourglass-split fs-4"></i>
+          <div className="dash-card p-2.5 p-sm-3 d-flex align-items-center gap-2 gap-sm-3 overflow-hidden">
+            <div className="bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px' }}>
+              <i className="bi bi-hourglass-split fs-5"></i>
             </div>
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Pending</small>
-              <h3 className="fw-bold text-dark mb-0">{pendingCount}</h3>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-6 col-md-3">
-          <div className="dash-card p-3 d-flex align-items-center gap-3">
-            <div className="bg-success-subtle text-success rounded-3 p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
-              <i className="bi bi-patch-check-fill fs-4"></i>
-            </div>
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Approved</small>
-              <h3 className="fw-bold text-dark mb-0">{approvedCount}</h3>
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Pending</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{pendingCount}</h3>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="dash-card p-3 d-flex align-items-center gap-3">
-            <div className="bg-danger-subtle text-danger rounded-3 p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
-              <i className="bi bi-x-circle-fill fs-4"></i>
+          <div className="dash-card p-2.5 p-sm-3 d-flex align-items-center gap-2 gap-sm-3 overflow-hidden">
+            <div className="bg-success-subtle text-success rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px' }}>
+              <i className="bi bi-patch-check-fill fs-5"></i>
             </div>
-            <div>
-              <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Rejected</small>
-              <h3 className="fw-bold text-dark mb-0">{rejectedCount}</h3>
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Approved</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{approvedCount}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-6 col-md-3">
+          <div className="dash-card p-2.5 p-sm-3 d-flex align-items-center gap-2 gap-sm-3 overflow-hidden">
+            <div className="bg-danger-subtle text-danger rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px' }}>
+              <i className="bi bi-x-circle-fill fs-5"></i>
+            </div>
+            <div className="min-w-0 flex-grow-1">
+              <small className="text-muted fw-bold text-uppercase d-block text-truncate" style={{ fontSize: '0.675rem' }}>Rejected</small>
+              <h3 className="fw-bold text-dark mb-0 fs-4 fs-sm-3">{rejectedCount}</h3>
             </div>
           </div>
         </div>
@@ -149,27 +149,27 @@ const StudentDashboard = () => {
       {/* Active Outpass Request Status & Approval Pipeline */}
       {latestRequest && (
         <div className="dash-card mb-4 border-0 shadow-sm rounded-4 overflow-hidden">
-          <div className="card-header bg-white py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
+          <div className="card-header bg-white py-3 px-3 px-sm-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 border-bottom">
             <div className="d-flex align-items-center gap-2">
               <i className="bi bi-activity text-primary fs-4"></i>
-              <h5 className="font-heading fw-bold text-dark mb-0">Outpass Live Status Tracker</h5>
+              <h5 className="font-heading fw-bold text-dark mb-0 fs-6 fs-sm-5">Outpass Live Status Tracker</h5>
             </div>
             <span className="font-monospace fw-bold text-secondary bg-light px-3 py-1 rounded-pill small">
               ID: {latestRequest.id}
             </span>
           </div>
 
-          <div className="card-body p-4">
+          <div className="card-body p-3 p-sm-4">
             {/* Live Overall Status Stage Alert */}
-            <div className="p-3 mb-4 rounded-3 border d-flex align-items-center justify-content-between" style={{ backgroundColor: '#f8fafc' }}>
+            <div className="p-3 mb-4 rounded-3 border d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3" style={{ backgroundColor: '#f8fafc' }}>
               <div>
                 <small className="text-muted d-block fw-semibold text-uppercase" style={{ fontSize: '0.75rem' }}>Current Application Status</small>
-                <h5 className="fw-bold text-primary mb-0">{getDetailedStatusText(latestRequest)}</h5>
+                <h5 className="fw-bold text-primary mb-0 fs-6 fs-sm-5">{getDetailedStatusText(latestRequest)}</h5>
               </div>
 
               {latestRequest.teacherStatus === 'Approved' && latestRequest.hodStatus === 'Approved' ? (
                 <button 
-                  className="btn btn-success btn-rounded shadow-sm px-4"
+                  className="btn btn-success btn-rounded shadow-sm px-4 w-100 w-sm-auto"
                   onClick={() => setSelectedGatepass(latestRequest)}
                 >
                   <i className="bi bi-qr-code-scan me-1"></i> View Gate Pass
@@ -193,17 +193,17 @@ const StudentDashboard = () => {
             {/* Application Summary */}
             <div className="mt-4 pt-3 border-top">
               <div className="row g-3 text-muted small">
-                <div className="col-md-3">
-                  <strong>Department:</strong> <span className="text-dark fw-semibold">{latestRequest.department}</span>
+                <div className="col-6 col-md-3">
+                  <strong>Department:</strong> <span className="text-dark fw-semibold d-block text-truncate">{latestRequest.department}</span>
                 </div>
-                <div className="col-md-3">
-                  <strong>Class Teacher:</strong> {latestRequest.teacherName}
+                <div className="col-6 col-md-3">
+                  <strong>Class Teacher:</strong> <span className="text-dark fw-semibold d-block text-truncate">{latestRequest.teacherName}</span>
                 </div>
-                <div className="col-md-3">
-                  <strong>Out Date & Timing:</strong> {latestRequest.date} ({latestRequest.outTime} → {latestRequest.expectedReturnTime})
+                <div className="col-6 col-md-3">
+                  <strong>Out Date & Timing:</strong> <span className="text-dark fw-semibold d-block">{latestRequest.date} ({latestRequest.outTime} → {latestRequest.expectedReturnTime})</span>
                 </div>
-                <div className="col-md-3">
-                  <strong>Reason:</strong> {latestRequest.reason}
+                <div className="col-6 col-md-3">
+                  <strong>Reason:</strong> <span className="text-dark fw-semibold d-block text-truncate">{latestRequest.reason}</span>
                 </div>
               </div>
             </div>
@@ -213,17 +213,17 @@ const StudentDashboard = () => {
 
       {/* History Outpass Requests Log with Search & Filter */}
       <div className="dash-card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div className="card-header bg-white py-3 px-4 border-bottom">
-          <div className="row align-items-center g-3">
-            <div className="col-md-4">
+        <div className="card-header bg-white py-3 px-3 px-sm-4 border-bottom">
+          <div className="row align-items-center g-2 g-sm-3">
+            <div className="col-12 col-md-4">
               <div className="d-flex align-items-center gap-2">
                 <i className="bi bi-journal-text text-primary fs-4"></i>
-                <h5 className="font-heading fw-bold text-dark mb-0">My Applications Log</h5>
+                <h5 className="font-heading fw-bold text-dark mb-0 fs-6 fs-sm-5">My Applications Log</h5>
               </div>
             </div>
 
             {/* Search Input */}
-            <div className="col-md-5">
+            <div className="col-12 col-sm-7 col-md-5">
               <div className="input-group input-group-sm">
                 <span className="input-group-text bg-light border-end-0">
                   <i className="bi bi-search text-muted"></i>
@@ -239,8 +239,8 @@ const StudentDashboard = () => {
             </div>
 
             {/* Filter Dropdown */}
-            <div className="col-md-3 text-md-end">
-              <div className="d-flex align-items-center justify-content-md-end gap-2">
+            <div className="col-12 col-sm-5 col-md-3 text-sm-end">
+              <div className="d-flex align-items-center justify-content-sm-end gap-2">
                 <small className="text-muted fw-semibold">Filter:</small>
                 <select
                   className="form-select form-select-sm w-auto rounded-3"
