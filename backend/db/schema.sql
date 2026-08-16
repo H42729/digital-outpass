@@ -1,12 +1,10 @@
 -- ====================================================================
 -- APEX DIGITAL OUTPASS MANAGEMENT SYSTEM — MySQL Schema
 -- ====================================================================
--- Run this script against your MySQL instance:
---   mysql -u root -p < backend/db/schema.sql
+-- Run against your MySQL instance (connect to correct DB first):
+--   mysql -h HOST -P PORT -u USER -p DATABASE < backend/db/schema.sql
 -- ====================================================================
 
-CREATE DATABASE IF NOT EXISTS outpass_db;
-USE outpass_db;
 
 -- ── Users Table ─────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (

@@ -51,6 +51,51 @@ async function start() {
   try {
     const connection = await pool.getConnection();
     console.log('✅ MySQL connected successfully');
+
+    // Auto-create tables if they don't exist
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR(50) PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(20) NOT NULL,
+        reg_no VARCHAR(50),
+        department VARCHAR(100) NOT NULL,
+        year VARCHAR(20),
+        teacher_name VARCHAR(100),
+        avatar_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS outpass_requests (
+        id VARCHAR(50) PRIMARY KEY,
+        student_id VARCHAR(50) NOT NULL,
+        student_name VARCHAR(100) NOT NULL,
+        reg_no VARCHAR(50) NOT NULL,
+        department VARCHAR(100) NOT NULL,
+        year VARCHAR(20) NOT NULL,
+        teacher_name VARCHAR(100) NOT NULL,
+        reason TEXT NOT NULL,
+        date DATE NOT NULL,
+        out_time VARCHAR(20) NOT NULL,
+        expected_return_time VARCHAR(20) NOT NULL,
+        teacher_status VARCHAR(20) NOT NULL DEFAULT 'Pending',
+        hod_status VARCHAR(20) NOT NULL DEFAULT 'Pending',
+        teacher_comments TEXT,
+        hod_comments TEXT,
+        applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        teacher_action_at TIMESTAMP NULL,
+        hod_action_at TIMESTAMP NULL,
+        FOREIGN KEY (student_id) REFERENCES users(id),
+        INDEX idx_outpass_student (student_id),
+        INDEX idx_outpass_teacher_status (teacher_status),
+        INDEX idx_outpass_hod_status (hod_status)
+      )
+    `);
+    console.log('✅ Database tables verified/created');
+
     connection.release();
   } catch (err) {
     console.warn('⚠️  MySQL not available — running with in-memory fallback:', err.message);
